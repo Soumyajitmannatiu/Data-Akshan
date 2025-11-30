@@ -1,0 +1,28 @@
+# Dockerfile.sandbox
+FROM python:3.11-slim
+
+# Set the working directory inside the container
+WORKDIR /workspace
+
+# Install system dependencies needed for Matplotlib's 'Agg' backend
+# libfreetype6-dev and libpng-dev are crucial for PNG/vector graphics rendering
+# These include development headers for libraries that Matplotlib links against
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libffi-dev \
+    gcc \
+    python3-dev \
+    # For Matplotlib's 'Agg' backend to save PNGs correctly
+    libfreetype6-dev \
+    libpng-dev \
+    # Optional: For better font rendering (though Agg mostly handles this)
+    fontconfig \
+    # Clean up apt caches to keep image size down
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+# Use a pinned version if you need specific compatibility
+RUN pip install --no-cache-dir \
+    pandas \
+    matplotlib \
+    seaborn
