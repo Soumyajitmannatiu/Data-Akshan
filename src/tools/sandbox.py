@@ -38,7 +38,7 @@ def execute_sandboxed_code(code_string: str, input_files: list | None, output_fi
 
     Returns:
         dict: A dictionary containing stdout, stderr, execution_time, and a list of paths
-              to any output files successfully retrieved.
+              to any output files successfully retrieved along with the status code.
     """
     if input_files is None:
         input_files = []

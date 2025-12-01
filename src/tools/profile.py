@@ -1,6 +1,7 @@
 import pandas as pd
 import json
-
+from src.utils.AgentConfig import APP_NAME,USER_ID,SESSION_ID
+from google.adk.sessions.base_session_service import BaseSessionService
 def data_profiler(input_file:str)->dict:
     """
     Profiles data present in a csv file. Gives context around data given using pandas based operations like df.describe,df.columns and etc.
@@ -25,6 +26,14 @@ def data_profiler(input_file:str)->dict:
     except Exception as e:
         return {"status": "error","message": e}
     
+async def get_profile(session_service:BaseSessionService,app_name:str=APP_NAME,user_id:str=USER_ID,session_id:str=SESSION_ID):   
+    """
+    Tool return the data
+    """
+    session= await session_service.get_session(app_name=app_name,session_id=session_id,user_id=user_id)
+    if session:
+        current_profile= session.state.get('data_profile','No Profile created yet.')
+    return current_profile
 
 if __name__ == '__main__':
     print(data_profiler('data\\BlackFriday_Sales.csv'))
